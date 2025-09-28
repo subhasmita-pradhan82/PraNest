@@ -52,9 +52,14 @@ const store = MongoStore.create({
     touchAfter: 24 * 3600,
 });
 
-store.on("error", () => {
+// store.on("error", () => {
+//     console.log("ERROR in MONGO SESSION STORE", err);
+// });
+
+store.on("error", (err) => {
     console.log("ERROR in MONGO SESSION STORE", err);
 });
+
 
 const sessioninOptions = {
     store,
@@ -75,8 +80,8 @@ const sessioninOptions = {
 app.use(session(sessioninOptions));
 app.use(flash());
 
-app.use(passport.session());
 app.use(passport.initialize());
+app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
